@@ -1,0 +1,9 @@
+npm install stylus -g 全局命令
+stylus [参数] [目录或文件路径]
+-c 压缩
+-C 从stylus到css  stylus -C [目标css路径] [输出styl路径]
+
+使用grunt
+npm install grunt --save-dev 
+npm install grunt-contrib-watch --save-dev ：监视文件变动，做出相应动作。
+npm install grunt-contrib-stylus --save-dev ：stylus编写styl输出css 

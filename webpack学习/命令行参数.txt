@@ -1,0 +1,12 @@
+
+webpack 输入文件  输出文件 
+ 
+--watch   监听文件改变，改变后更新
+--module-bind 'css=css-loader'    绑定loader
+--progress 显示打包过程 ，百分比读条
+--display-modules 显示打包详细过程
+--display-reasons 显示打包原因
+--color 显示颜色
+
+配置完package.json 里面的 scripts:{ "webpack":"webpack --config [....一些参数....]"}  就可以使用 npm run webpack
+

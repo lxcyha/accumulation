@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>calendar canvas</title>
+</head>
+<body>
+<canvas id="canvas" height="550" width="1024" style="margin: 20px auto 0 auto; border: 1px solid black; display: block">
+    your browser can't support canvas
+</canvas>
+
+<script>
+    "use strict"
+
+
+    let currentTime = new Date()
+    let canvas = document.querySelector("#canvas")
+    let context = canvas.getContext("2d")
+    let balls = []
+
+    let numberTemplateObject = {
+        0: [
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 0, 0, 0, 0, 1, 1],
+            [1, 1, 0, 0, 0, 0, 1, 1],
+            [1, 1, 0, 0, 0, 0, 1, 1],
+            [1, 1, 0, 0, 0, 0, 1, 1],
+            [1, 1, 0, 0, 0, 0, 1, 1],
+            [1, 1, 0, 0, 0, 0, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+        ],
+        1: [
+            [0, 0, 0, 1, 1, 0, 0, 0],
+            [0, 0, 0, 1, 1, 0, 0, 0],
+            [0, 0, 0, 1, 1, 0, 0, 0],
+            [0, 0, 0, 1, 1, 0, 0, 0],
+            [0, 0, 0, 1, 1, 0, 0, 0],
+            [0, 0, 0, 1, 1, 0, 0, 0],
+            [0, 0, 0, 1, 1, 0, 0, 0],
+            [0, 0, 0, 1, 1, 0, 0, 0],
+            [0, 0, 0, 1, 1, 0, 0, 0],
+            [0, 0, 0, 1, 1, 0, 0, 0],
+        ],
+        2: [
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 0, 0, 0, 0, 0, 0],
+            [1, 1, 0, 0, 0, 0, 0, 0],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+        ],
+        3: [
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+        ],
+        4: [
+            [1, 1, 0, 0, 0, 0, 1, 1],
+            [1, 1, 0, 0, 0, 0, 1, 1],
+            [1, 1, 0, 0, 0, 0, 1, 1],
+            [1, 1, 0, 0, 0, 0, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 1],
+        ],
+        5: [
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 0, 0, 0, 0, 0, 0],
+            [1, 1, 0, 0, 0, 0, 0, 0],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+        ],
+        6: [
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 0, 0, 0, 0, 0, 0],
+            [1, 1, 0, 0, 0, 0, 0, 0],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 0, 0, 0, 0, 1, 1],
+            [1, 1, 0, 0, 0, 0, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+        ],
+        7: [
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 1],
+        ],
+        8: [
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 0, 0, 0, 0, 1, 1],
+            [1, 1, 0, 0, 0, 0, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 0, 0, 0, 0, 1, 1],
+            [1, 1, 0, 0, 0, 0, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+        ],
+        9: [
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 0, 0, 0, 0, 1, 1],
+            [1, 1, 0, 0, 0, 0, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1],
+        ],
+        ":": [
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 1, 1, 1, 0, 0],
+            [0, 0, 0, 1, 1, 1, 0, 0],
+            [0, 0, 0, 1, 1, 1, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 1, 1, 1, 0, 0],
+            [0, 0, 0, 1, 1, 1, 0, 0],
+            [0, 0, 0, 1, 1, 1, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+        ]
+
+    }
+
+    let drawNumber = (numberTemplate, x, y, ctx) => {
+        let R = 4
+        for (let i = 0, length = numberTemplate.length; i < length; i++) {
+            for (let j = 0, length = numberTemplate.length; j < length; j++) {
+                if (numberTemplate[i][j] == 1) {
+                    ctx.beginPath()
+                    ctx.arc(x + j + 2 * j * (R + 1) + R + 1, y + i + 2 * i * (R + 1) + R + 1, R, 0, 2 * Math.PI)
+                    ctx.fillStyle = "blue"
+                    ctx.fill()
+                }
+            }
+        }
+    }
+    let drawTime = (hour, minute, second, ctx) => {
+
+        if (hour < 10)
+            hour = "0" + (hour + "")
+        if (minute < 10)
+            minute = "0" + (minute + "")
+        if (second < 10)
+            second = "0" + (second + "")
+        let timeArray = [hour, minute, second].join(":").split("")
+        for (let i = 0, length = timeArray.length; i < length; i++) {
+            drawNumber(numberTemplateObject[timeArray[i]], 100 + 100 * i, 10, ctx)
+        }
+    }
+    let draw = (ctx) => {
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+        let hour = currentTime.getHours()
+        let minute = currentTime.getMinutes()
+        let second = currentTime.getSeconds()
+
+        drawTime(hour, minute, second, ctx)
+    }
+    let getRandomColor = ()=>{
+        return "#"+("00000"+((Math.random()*16777215+0.5)>>0).toString(16)).slice(-6);
+    }
+
+    let random = (number)=>{
+        return Math.random() > 0.5?-number * Math.random():number*Math.random();
+    }
+
+    let getDifferentPosition=(next,cur)=>{
+
+        let differentArray = []
+        let hour = next.getHours()
+        let minute = next.getMinutes()
+        let second = next.getSeconds()
+        if (hour < 10)
+            hour = "0" + (hour + "")
+        if (minute < 10)
+            minute = "0" + (minute + "")
+        if (second < 10)
+            second = "0" + (second + "")
+        let nextArray = [hour,minute,second].join(":").split("")
+
+
+        let cHour = cur.getHours()
+        let cMinute = cur.getMinutes()
+        let cSecond = cur.getSeconds()
+        if (cHour < 10)
+            cHour = "0" + (cHour + "")
+        if (cMinute < 10)
+            cMinute = "0" + (cMinute + "")
+        if (cSecond < 10)
+            cSecond = "0" + (cSecond + "")
+        let curArray = [cHour,cMinute,cSecond].join(":").split("")
+
+        for (let i =0,length=curArray.length;i<length;i++){
+            if (nextArray[i]!=curArray[i]){
+                differentArray.push({
+                    x:100+i*100,
+                    y:0,
+                    number:curArray[i]
+                })
+            }
+        }
+        return differentArray
+    }
+
+    let update = (ctx) => {
+        let R = 4
+        let nextTime = new Date();
+        let differentArray = getDifferentPosition(nextTime,currentTime)
+        for (let i=0,iLength=differentArray.length;i<iLength;i++){
+            let differentPosition = differentArray[i];
+
+            for (let j =0,jLength=numberTemplateObject[differentPosition.number].length;j<jLength;j++){
+
+                for (let k =0,kLength=numberTemplateObject[differentPosition.number][j].length;k<kLength;k++){
+                    if (numberTemplateObject[differentPosition.number][j][k]==1){
+                        balls.push({
+                            x:differentPosition.x+k*2*(R+1)+R+1,
+                            y:differentPosition.y+j*2*(R+1)+R+1,
+                            vx:Math.random()>0.5?4:-4,
+                            vy:random(1),
+                            g:1+Math.random(),
+                            color:getRandomColor()
+                        })
+                    }
+
+                }
+            }
+        }
+
+        for (let i=0,iLength=balls.length;i<iLength;i++){
+
+            balls[i].x =balls[i].x +balls[i].vx;
+            balls[i].y +=balls[i].vy;
+            balls[i].vy +=balls[i].g;
+            if (balls[i].y+R/2>ctx.canvas.height-100){
+                balls[i].y = ctx.canvas.height - R/2 -100
+                balls[i].vy = - Math.floor(balls[i].vy *0.75)
+            }
+        }
+
+        for (let i=0,iLength=balls.length;i<iLength;i++){
+            let ball = balls[i];
+            ctx.beginPath()
+            ctx.arc(ball.x,ball.y,R,0,2*Math.PI)
+            ctx.fillStyle = ball.color
+            ctx.fill()
+        }
+
+
+        let tempArray = []
+        for (let i=0,iLength=balls.length;i<iLength;i++){
+            if (balls[i].x+R/2>0&&balls[i].x-R/2<ctx.canvas.width){
+                tempArray.push(balls[i])
+            }
+        }
+        balls = tempArray
+
+        currentTime = nextTime
+    }
+
+
+    setInterval(() => {
+        draw(context)
+        update(context)
+    }, 50)
+
+
+</script>
+
+<script id="__bs_script__">//<![CDATA[
+document.write("<script async src='http://HOST:3000/browser-sync/browser-sync-client.js?v=2.18.11'><\/script>".replace("HOST", location.hostname));
+//]]></script>
+
+
+</body>
+</html>

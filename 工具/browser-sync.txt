@@ -1,0 +1,11 @@
+开服务
+browser-sync start --server --files "*.*"  
+代理
+browser-sync start --proxy "localhost:8080" --files "css/*.css"
+
+
+html 加上
+
+ <script id="__bs_script__">//<![CDATA[
+    document.write("<script async src='http://HOST:3000/browser-sync/browser-sync-client.js?v=2.18.11'><\/script>".replace("HOST", location.hostname));
+    //]]></script>

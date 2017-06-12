@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-stylus": "^1.2.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "stylus": "^0.54.5"
+  }
+}

@@ -1,0 +1,175 @@
+pos(type, args)
+  i = 0
+  position unquote(type)
+  {args[i]} args[i + 1] is a 'unit' ? args[i += 1] : 0
+  {args[i += 1]} args[i + 1] is a 'unit' ? args[i += 1] : 0
+
+absolute()
+  pos('absolute', arguments)
+
+fixed()
+  pos('fixed', arguments)
+
+#prompt
+  absolute top 150px left 5px
+  width 200px
+  margin-left -(@width / 2)
+
+#logo
+  fixed top left
+
+@import '../node_modules/nib'
+body
+  background: linear-gradient(20px top, white, black)
+  height 200px
+  width 200px
+
+header
+  #logo
+    border:1px solid red
+body
+  font 14px/1.5 Helvetica, arial, sans-serif
+  button
+  button.button
+  input[type='button']
+  input[type='submit']
+    border-radius 5px
+
+header
+  #logo,div
+    font-size:14px
+ul
+  li a
+    display: block
+    color: blue
+    padding: 5px
+    html.ie &
+      padding: 6px
+    &:hover
+      color: red
+
+
+border-radius(val)
+  -webkit-border-radius: val
+  -moz-border-radius: val
+  border-radius: val
+
+button
+  border-radius(5px)
+
+border-radius()
+  -webkit-border-radius: arguments
+  -moz-border-radius: arguments
+  border-radius: arguments
+
+button
+  border-radius: 5px 10px;
+
+add(a, b = a)
+  a + b
+
+div
+  border unit(add(10, 5),'px')
+  border-bottom unit(add(10),'px')
+
+add(a, b = a)
+  a = unit(a, px)
+  b = unit(b, px)
+  a + b
+
+div
+  border add(15%, 10deg)
+
+sizes()
+  15px 10px
+
+div
+  border sizes()[0]
+
+font-size = 14px
+
+body
+  font font-size Arial, sans-seri
+
+#prompt
+  position: absolute
+  top: 150px
+  left: 50%
+  width: w = 200px
+  margin-left: -(w / 2)
+
+#prompt
+  position: absolute
+  width: 200px
+  margin-left: -(@width / 2)
+
+position()
+  position: arguments
+  z-index: 1 unless @z-index
+
+#logo
+  z-index: 20
+  position: absolute
+
+#logo2
+  position: absolute
+
+body
+  color: red
+  ul
+    li
+      color: blue
+      a
+        background-color: @color
+table
+  for row in 1 2 3 4 5
+    tr:nth-child({row})
+      height: 10px * row
+
+vendors = webkit moz o ms official
+border-radius()
+  for vendor in vendors
+    if vendor == official
+      border-radius: arguments
+    else
+      -{vendor}-border-radius: arguments
+#content
+  border-radius: 5px
+
+@font-face
+  font-family Geo
+  font-style normal
+  src url(fonts/geo_sans_light/GensansLight.ttf)
+
+.ingeo
+  font-family Geo
+
+@media print
+  #header
+  #footer
+    display none
+
+@keyframes pulse
+  0%
+    background-color red
+    transform scale(1.0) rotate(0deg)
+  33%
+    background-color blue
+    -webkit-transform scale(1.1) rotate(-5deg)
+
+.message {
+  padding: 10px;
+  border: 1px solid #eee;
+}
+
+.warning {
+  @extend .message;
+  color: #E2E21E;
+}
+box-shadow(args...)
+  -webkit-box-shadow args
+  -moz-box-shadow args
+  box-shadow args
+
+#login
+  box-shadow 1px 2px 5px #eee
