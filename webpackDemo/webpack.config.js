@@ -16,7 +16,7 @@ module.exports = {
             template:'index.html',
             // 插入位置
             inject:'head',
-            title:'webpack is good'
+            title:'webpackDemo is good'
         })
     ]
 }
