@@ -33,7 +33,7 @@ var bailRE = /[^\w.$]/;
 var bailRE2 = /[^AB$]/;
 var bailRE4= /[^AB$]/;
 var bailRE3 = /[^A$]/;
-console.log(bailRE.test("httpcyh.com"))
+console.log(bailRE.test("/httpcyh.com"))
 console.log(bailRE2.test("CC"))
 console.log(bailRE3.test("B"))
 console.log(bailRE4.test("$"))
@@ -48,3 +48,54 @@ var classify = function (str) { return str
 console.log(classifyRE.test("A"))
 console.log(classify("-winfsdf_ins-dofsn"))
 
+var file = "c:/123.vue"
+var match = file.match(/([^/\\]+)\.vue$/);
+console.log(match)
+// console.log((name ? ("<123>") : "<Anonymous>") +
+//     (file  !== false ? (" at " + file) : ''))
+
+
+var repeat = function (str, n) {
+    var res = '';
+    while (n) {
+        if (n % 2 === 1) { res += str; }
+        if (n > 1) { str += str; }
+        n >>= 1;
+        console.log(n)
+    }
+    return res
+};
+
+console.log(repeat("a",5))
+
+
+
+var generateComponentTrace = function (vm) {
+    if (vm._isVue && vm.$parent) {
+        var tree = [];
+        var currentRecursiveSequence = 0;
+        while (vm) {
+            if (tree.length > 0) {
+                var last = tree[tree.length - 1];
+                if (last.constructor === vm.constructor) {
+                    currentRecursiveSequence++;
+                    vm = vm.$parent;
+                    continue
+                } else if (currentRecursiveSequence > 0) {
+                    // 如果不是vm 就把 次数和这个节点当成二维数组放进去保存， 然后重置回归次数
+                    tree[tree.length - 1] = [last, currentRecursiveSequence];
+                    currentRecursiveSequence = 0;
+                }
+            }
+            tree.push(vm);
+            vm = vm.$parent;
+        }
+        return '\n\nfound in\n\n' + tree
+                .map(function (vm, i) { return ("" + (i === 0 ? '---> ' : repeat(' ', 5 + i * 2)) + (Array.isArray(vm)
+                    ? ((formatComponentName(vm[0])) + "... (" + (vm[1]) + " recursive calls)")
+                    : formatComponentName(vm))); })
+                .join('\n')
+    } else {
+        return ("\n\n(found in " + (formatComponentName(vm)) + ")")
+    }
+};

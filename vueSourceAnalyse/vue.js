@@ -243,6 +243,7 @@
      * Check if two values are loosely equal - that is,
      * if they are plain objects, do they have the same shape?
      */
+    // 放宽松的Equal
     function looseEqual (a, b) {
         var isObjectA = isObject(a);
         var isObjectB = isObject(b);
@@ -435,8 +436,11 @@
     var formatComponentName = (null); // work around flow check
 
     {
+
         var hasConsole = typeof console !== 'undefined';
         var classifyRE = /(?:^|[-_])(\w)/g;
+
+        // 类化 - _ 转驼峰
         var classify = function (str) { return str
             .replace(classifyRE, function (c) { return c.toUpperCase(); })
             .replace(/[-_]/g, ''); };
