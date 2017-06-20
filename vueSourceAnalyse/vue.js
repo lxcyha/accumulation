@@ -605,6 +605,8 @@
     /**
      * Defer a task to execute it asynchronously.
      */
+
+    // 创建一个异步任务
     var nextTick = (function () {
         var callbacks = [];
         var pending = false;
@@ -626,6 +628,8 @@
         // completely stops working after triggering a few times... so, if native
         // Promise is available, we will use it:
         /* istanbul ignore if */
+
+        // 如果有promise 就用promise执行handler
         if (typeof Promise !== 'undefined' && isNative(Promise)) {
             var p = Promise.resolve();
             var logError = function (err) { console.error(err); };
@@ -638,6 +642,7 @@
                 // "force" the microtask queue to be flushed by adding an empty timer.
                 if (isIOS) { setTimeout(noop); }
             };
+            // 如果没有promise 就用mutationObserver创建观察textNode事件创建异步,用来执行handler
         } else if (typeof MutationObserver !== 'undefined' && (
                 isNative(MutationObserver) ||
                 // PhantomJS and iOS 7.x
@@ -655,6 +660,7 @@
                 counter = (counter + 1) % 2;
                 textNode.data = String(counter);
             };
+            // 如果上述两个方法都不行，则使用setTimeout
         } else {
             // fallback to setTimeout
             /* istanbul ignore next */
@@ -688,6 +694,7 @@
         }
     })();
 
+    // 集合
     var _Set;
     /* istanbul ignore if */
     if (typeof Set !== 'undefined' && isNative(Set)) {
@@ -722,6 +729,8 @@
      * A dep is an observable that can have multiple
      * directives subscribing to it.
      */
+
+        // 创建一个发布者,每一个发布者对应多个watcher订阅组成
     var Dep = function Dep () {
         this.id = uid++;
         this.subs = [];
@@ -743,6 +752,7 @@
 
     Dep.prototype.notify = function notify () {
         // stabilize the subscriber list first
+        // 先保存要执行的函数，防止在执行过程中改变
         var subs = this.subs.slice();
         for (var i = 0, l = subs.length; i < l; i++) {
             subs[i].update();
@@ -816,7 +826,6 @@
     /*  */
 
     var arrayKeys = Object.getOwnPropertyNames(arrayMethods);
-
     /**
      * By default, when a reactive property is set, the new value is
      * also converted to become reactive. However when passing down props,
@@ -834,6 +843,8 @@
      * object's property keys into getter/setters that
      * collect dependencies and dispatches updates.
      */
+
+    // 观察者分为数组和对象
     var Observer = function Observer (value) {
         this.value = value;
         this.dep = new Dep();
@@ -843,6 +854,7 @@
             var augment = hasProto
                 ? protoAugment
                 : copyAugment;
+            // 将数组方法定义到Observer
             augment(value, arrayMethods, arrayKeys);
             this.observeArray(value);
         } else {

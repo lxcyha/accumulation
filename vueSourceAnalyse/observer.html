@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<input type="text" value="123" id="a">
+<script>
+
+    var observer = new window.MutationObserver(function (mutations) {
+        console.log(mutations)
+        console.log("callback")
+    })
+
+    var opts = {
+        childList: true,
+//    ：子元素的变动
+        attributes: true,
+//    ：属性的变动
+        characterData: true,
+//    ：节点内容或节点文本的变动
+        subtree: true,
+        attributeOldValue:true
+//    ：所有下属节点（包括子节点和子节点的子节点）的变动
+    }
+    observer.observe(document.querySelector("#a"), opts)
+    setTimeout(function () {
+        document.querySelector("#a").value="ab"
+    },1000)
+    //    observer.disconnect()
+</script>
+</body>
+</html>
