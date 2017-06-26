@@ -110,4 +110,4 @@ function set (target, key, val) {
     }
 }
 
-console.log(set([1,2,3,4,5,6],1,2))
+console.log(set([1,2,3,4,5,6],7,2))
