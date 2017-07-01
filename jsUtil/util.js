@@ -48,5 +48,42 @@ module.exports = {
             }
         }
         return -1
+    },
+    inherits(ctor, superCtor){
+        if (typeof Object.create === 'function') {
+            // implementation from standard node.js 'util' module
+                ctor.super_ = superCtor
+                ctor.prototype = Object.create(superCtor.prototype, {
+                    constructor: {
+                        value: ctor,
+                        enumerable: false,
+                        writable: true,
+                        configurable: true
+                    }
+                });
+        } else {
+            // old school shim for old browsers
+            ctor.super_ = superCtor
+            var TempCtor = function () {}
+            TempCtor.prototype = superCtor.prototype
+            ctor.prototype = new TempCtor()
+            ctor.prototype.constructor = ctor
+        }
+
+    },
+    loadImageAsync(url) {
+        return new Promise(function(resolve, reject) {
+            var image = new Image();
+
+            image.onload = function() {
+                resolve(image);
+            };
+
+            image.onerror = function() {
+                reject(new Error('Could not load image at ' + url));
+            };
+
+            image.src = url;
+        });
     }
 }
