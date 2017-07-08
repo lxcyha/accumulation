@@ -1,0 +1,4 @@
+<div>
+  <div *ngFor="let user of users;let i = index">{{i+1}},{{user.name}},{{user.age}}</div>
+  <app-star *ngFor="let star of stars;let idx = index" class="full" [ngClass]="className">{{idx}}</app-star>
+</div>
