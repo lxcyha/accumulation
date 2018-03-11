@@ -39,10 +39,10 @@ import {logger} from 'codelyzer/util/logger';
     BrowserModule,
     AppRoutingModule
   ],
-  providers: [PermissionGuard, FocusGuard, ResolveGuard, LoggerService, {
+   providers: [PermissionGuard, FocusGuard, ResolveGuard, LoggerService, TestService/*, {
     // 使用工厂
     provide: TestService, useFactory: (loggerService: LoggerService, isDev: boolean) => {
-      console.log(isDev)
+      // console.log(isDev)
       // const logger = new LoggerService();
       const dev = Math.random() > 0.5
       if (dev) {
@@ -52,7 +52,7 @@ import {logger} from 'codelyzer/util/logger';
       }
     },
     deps: [LoggerService, 'IS_DEV_ENV']
-  },
+  }*/,
     {provide: 'IS_DEV_ENV', useValue: false}
   ],
   bootstrap: [AppComponent]
